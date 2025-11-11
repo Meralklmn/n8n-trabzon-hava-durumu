@@ -1,0 +1,90 @@
+{
+  "name": "Hava-Durumu-Mail",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -112
+      ],
+      "id": "767ace78-3526-4ebc-8b16-b405c5ae4a97",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=41.0&longitude=39.7&current_weather=true",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -176,
+        -112
+      ],
+      "id": "8d4e221b-cf77-48b3-a1a7-13ea8c97063a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "sendTo": "meralklmn8@gmail.com",
+        "subject": "hava durumu",
+        "emailType": "text",
+        "message": "=tarih:{{ $json.current_weather.time }}\nsıcaklık:{{ $json.current_weather_units.temperature }}\nrüzgar hızı:{{ $json.current_weather.windspeed }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        -96
+      ],
+      "id": "b6a404af-0ce4-4e5a-a30e-8de9127cbdb9",
+      "name": "Send a message",
+      "webhookId": "c6a5f0b2-99e1-49c1-9ea7-4c790922d02b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "lb2vPLxT8jCcCfdN",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "64834297-a7e6-4add-898e-4bba2570c7ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "edc0c68d4f6fbcaf8ddbf872ab4341e41595ca41c4b02acadebdb53059f0de20"
+  },
+  "id": "hAvW5pAxKtaPZ5d2",
+  "tags": []
+}
